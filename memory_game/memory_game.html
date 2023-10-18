@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<head>
+    <title> Memory Game </title>
+    <style>
+        body {
+            background-color: #337f7f;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 align="center"> Memory Game v2 </h1>
+    <p align="center"> Numero de clicks: <b id="clicks">0</b> | Numero de correctos: <b id="correctos">0</b></p>
+       
+    <table border="1" align="center">
+        <tr>
+            <td> <img name="none2.png" src="bottle.png" /></td>
+            <td> <img name="none2.png" src="cherrypy.png" /></td>
+            <td> <img name="none2.png" src="django.png" /></td>
+            <td> <img name="none2.png" src="scikitlearn.png" /></td>
+        </tr>
+        <tr>
+            <td> <img name="none2.png" src="numpy.png" /></td>
+            <td> <img name="none2.png" src="pandas.png" /></td>
+            <td> <img name="none2.png" src="scipy.png" /></td>
+            <td> <img name="none2.png" src="tensorflow.png" /></td>
+        </tr>
+        <tr>
+            <td> <img name="none2.png" src="bottle.png" /></td>
+            <td> <img name="none2.png" src="cherrypy.png" /></td>
+            <td> <img name="none2.png" src="django.png" /></td>
+            <td> <img name="none2.png" src="scikitlearn.png" /></td>
+        </tr>
+        <tr>
+            <td> <img name="none2.png" src="numpy.png" /></td>
+            <td> <img name="none2.png" src="pandas.png" /></td>
+            <td> <img name="none2.png" src="scipy.png" /></td>
+            <td> <img name="none2.png" src="tensorflow.png" /></td>
+        </tr>
+    </table>
+
+    <div align="center"> <button onclick="$('img').click()"> Girar todas imagenes! </button> </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script>
+
+        function swapImage(el) {
+            var aux = el.src;
+            el.src = el.name;
+            el.name = aux;
+        }
+        $("img").click(
+            function () {
+                if ($(this).hasClass('girable')) {
+                    $(this).fadeOut(1000, function () { swapImage(this); }).fadeIn(1000);
+                    $(this).attr('class', 'girada');
+                    if ($(".girada").length == 2) {
+                        if ($(".girada")[0].src == $(".girada")[1].src) {
+                            $(".girada").attr('class', 'nogirable');
+                            //$("#correctos").text(parseInt($("#correctos").text()) + 1);
+                            $("#correctos").text($(".nogirable").length / 2);
+                        } else {
+                            $(".girada").delay(2000).fadeOut(1000, function () { swapImage(this); }).fadeIn(1000);//.each(function () { swapImage(this); });
+                            $(".girada").attr('class', 'girable');
+                        }
+                    }
+                    $("#clicks").text(parseInt($("#clicks").text()) + 1);
+                }
+                if ($(this).hasClass('inicio')) {
+                    swapImage(this);
+                    $(this).attr('class', 'girable');
+                }
+            }
+        );
+        $("img").addClass('inicio');
+        $("img").width(150);
+        $("td").width(150);
+        $("td").height(155);
+        
+    </script>
+
+</body>
+</html>

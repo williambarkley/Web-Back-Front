@@ -1,0 +1,211 @@
+<html>
+<head>
+	<title> Juego de las Ranas </title>
+	<style>
+        body {
+            background-color: #337f7f;
+        }
+	</style>
+
+
+</head>
+
+
+<body align="center">
+	<h1>
+		Juego de las Ranas - solo con HTML,
+		imagenes y Java Script - 4
+	</h1>
+	<table border="1" bordercolor="#000608" align="center">
+		<tr>
+			<td> <img src="E.png"> </td>
+			<td> <img src="E.png"> </td>
+			<td> <img src="E.png"> </td>
+			<td> <img src="E.png"> </td>
+			<td> <img src="E.png"> </td>
+			<td> <img src="E.png"> </td>
+			<td> <img src="E.png"> </td>
+		</tr>
+		<tr>
+			<td> <img id="0" src="L.png" onclick="mueve_rana(this)"> </td>
+			<td> <img id="1" src="L.png" onclick="mueve_rana(this)"> </td>
+			<td> <img id="2" src="L.png" onclick="mueve_rana(this)"> </td>
+			<td> <img id="3" src="B.png" onclick="mueve_rana(this)"> </td>
+			<td> <img id="4" src="R.png" onclick="mueve_rana(this)"> </td>
+			<td> <img id="5" src="R.png" onclick="mueve_rana(this)"> </td>
+			<td> <img id="6" src="R.png" onclick="mueve_rana(this)"> </td>
+		</tr>
+		<tr>
+			<td> <img src="E.png"> </td>
+			<td> <img src="E.png"> </td>
+			<td> <img src="E.png"> </td>
+			<td> <img src="E.png"> </td>
+			<td> <img src="E.png"> </td>
+			<td> <img src="E.png"> </td>
+			<td> <img src="E.png"> </td>
+		</tr>
+	</table>
+
+	<button onclick="window.location.reload();">  Refrescar </button>
+	<button id="resuelveHardcoded" onclick="resuelve_hardcoded();">  Resuelve </button>
+	<button onclick="undo();">  Deshacer </button>
+	<button onclick="randomize();">  Aleatoriza </button>
+
+	<p id="msg"></p>
+
+	<br>
+	<br>
+	<div>
+		Contador: <p id="contador"> 0 </p>
+	</div>
+
+
+	<script type="text/javascript">
+		/*
+		  algoritmo para resolver el partido desde: L L L B R R R
+		 */
+
+		/*
+		function resulve_hardcoded() {
+
+			var moves = [2, 4, 5, 3, 1, 0, 2, 4, 6, 5, 3, 1, 2, 4, 3];
+
+			tiempo = 1000;
+			for (let i = 0; i < moves.length; i++) {
+				setTimeout(() => { mueve_rana(document.getElementById(moves[i])) }, 1000*i);
+			}
+		} */
+
+		var movUsuario = [];
+
+        function checkBlock() {
+            const correctos = document.getElementById(0).src.includes("R.png") +
+                document.getElementById(1).src.includes("R.png") +
+                document.getElementById(2).src.includes("R.png") +
+                document.getElementById(3).src.includes("B.png");
+
+            if (correctos == 4) {
+                // setTimeout(() => { alert("You won! Has ganado!") } , 1);
+                document.getElementById("msg").innerHTML = "You won! Has ganado!"
+
+                return (true);
+            } else {
+                return (false);
+            }
+
+        }
+
+
+
+		function checkWin() {
+			const correctos = document.getElementById(0).src.includes("R.png") + 
+				document.getElementById(1).src.includes("R.png") +
+				document.getElementById(2).src.includes("R.png") +
+				document.getElementById(3).src.includes("B.png");
+
+			if (correctos == 4) {
+				// setTimeout(() => { alert("You won! Has ganado!") } , 1);
+                document.getElementById("msg").innerHTML = "You won! Has ganado!"
+
+				return (true);
+			} else {
+                return (false);
+            }
+			
+		}
+
+		function randomize() {
+			for (let i = 0; i < 7; i++) {
+				salta_rana(document.getElementById(i),
+					document.getElementById(Math.floor(Math.random() * 7)),
+					param_undo = false,
+					param_random = true);
+			}
+			document.getElementById("contador").innerHTML = "0";
+            movUsuario = [];
+		}
+
+		function resuelve_hardcoded() {
+			let moves = [3, 2, 4, 5, 3, 1, 0, 2, 4, 6, 5, 3, 1, 2, 4, 3]
+
+			for (let i = 1; i < moves.length; i++) {
+				setTimeout(() => { salta_rana(document.getElementById(moves[i - 1]), document.getElementById(moves[i])) }, (i-1) * 1000);
+			}
+		}
+
+
+        function salta_rana(o, d, param_undo = false, param_random = false) {
+			var src_copia = o.src, contador = 0;
+			o.src = d.src;
+			d.src = src_copia
+
+			document.getElementById("msg").innerHTML="";
+
+            if (param_undo) {
+				contador = parseInt(document.getElementById("contador").innerHTML) - 1;
+				document.getElementById("contador").innerHTML = contador;
+            } else if (!param_random) {
+				contador = parseInt(document.getElementById("contador").innerHTML) + 1;
+				movUsuario.push([o, d]);
+				document.getElementById("contador").innerHTML = contador;
+			}
+
+            const btnrResuelveHardcoded = document.getElementById('resuelveHardcoded');
+			if (contador > 0) {
+				btnrResuelveHardcoded.disabled = true;
+			} else {
+                btnrResuelveHardcoded.disabled = false;
+            }
+			checkWin();
+		}
+
+		function undo() {
+			if (movUsuario.length > 0) {
+				var mov = movUsuario.pop();
+				salta_rana(mov[0], mov[1], true);
+			}
+		}
+
+
+		function mueve_rana(el) {
+			//alert(el.id)
+			var id_el = parseInt(el.id, 10), el_vecino;
+
+			if (el.src.includes("L.png") && id_el < (7 - 2)) { // Tipo L y hay algo a la derecho
+				el_vecino = document.getElementById(id_el + 2);
+				if (el_vecino.src.includes("B.png")) {
+					salta_rana(el, el_vecino);
+				}
+			}
+
+			if (el.src.includes("L.png") && id_el < (7 - 1)) { // Tipo L y hay algo a la derecho
+				el_vecino = document.getElementById(id_el + 1);
+				if (el_vecino.src.includes("B.png")) {
+					salta_rana(el, el_vecino);
+				}
+			}
+
+			if (el.src.includes("R.png") && id_el > 1) { // Tipo L y hay algo a la derecho
+				el_vecino = document.getElementById(id_el - 2);
+				if (el_vecino.src.includes("B.png")) {
+					salta_rana(el, el_vecino);
+				}
+			}
+
+			if (el.src.includes("R.png") && id_el > 0) { // Tipo L y hay algo a la derecho
+				el_vecino = document.getElementById(id_el - 1);
+				if (el_vecino.src.includes("B.png")) {
+					salta_rana(el, el_vecino);
+				}
+			}
+
+
+
+
+		}
+
+
+	</script>
+
+</body>	
+</html>

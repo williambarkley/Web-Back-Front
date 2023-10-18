@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<head>
+    <title> Memory Game </title>
+    <style>
+        body {
+            background-color: #337f7f;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 align="center"> Memory Game </h1>
+    <table border="1" align="center">
+        <tr>
+            <td> <img name="none2.png" src="bottle.png" width=200 onclick="swapImage(this);"  /></td>
+            <td> <img name="none2.png"  src="cherrypy.png" width=200 onclick="swapImage(this);"  /></td>
+            <td> <img name="none2.png"  src="django.png" width=200 onclick="swapImage(this);"  /></td>
+            <td> <img name="none2.png"  src="scikitlearn.png" width=200 onclick="swapImage(this);"  /></td>
+        </tr>
+        <tr>
+            <td> <img name="none2.png"  src="numpy.png" width=200 onclick="swapImage(this);"  /></td>
+            <td> <img name="none2.png"  src="pandas.png" width=200 onclick="swapImage(this);"  /></td>
+            <td> <img name="none2.png"  src="scipy.png" width=200 onclick="swapImage(this);"  /></td>
+            <td> <img name="none2.png"  src="tensorflow.png" width=200 onclick="swapImage(this);"  /></td>
+        </tr>       
+        <tr>        
+            <td> <img name="none2.png"  src="bottle.png" width=200 onclick="swapImage(this);"  /></td>
+            <td> <img name="none2.png"  src="cherrypy.png" width=200 onclick="swapImage(this);"  /></td>
+            <td> <img name="none2.png"  src="django.png" width=200 onclick="swapImage(this);"  /></td>
+            <td> <img name="none2.png"  src="scikitlearn.png" width=200 onclick="swapImage(this);"  /></td>
+        </tr>
+        <tr>
+            <td> <img name="none2.png" src="numpy.png" width=200 onclick="swapImage(this);"  /></td>
+            <td> <img name="none2.png" src="pandas.png" width=200 onclick="swapImage(this);"   /></td>
+            <td> <img name="none2.png" src="scipy.png" width=200 onclick="swapImage(this);"   /></td>
+            <td> <img name="none2.png" src="tensorflow.png" width=200 onclick="swapImage(this);"   /></td>
+        </tr>
+    </table>
+	<button onclick="$('img').click()"> Iniciar juego! </button>
+    <script>
+        function swapImage(el) {
+            var aux = el.src;
+            el.src = el.name;
+            el.name = aux;
+        }
+    </script>
+	
+	<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
+</body>
+</html>

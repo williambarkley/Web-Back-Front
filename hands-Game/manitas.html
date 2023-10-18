@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!--BOOTSTRAP-->
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" 
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"> -->
+    <title> Manitas </title>
+    <style>
+        span{
+            margin-top: 200px;
+            margin-bottom: 200px;
+        }
+        button{
+            border-width: 1px;
+            border-radius: 25px;
+        }
+        #buttons{
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="text-align: center;">
+        <table style="text-align: center;">
+            <tr>
+                <td colspan="2" style="background-color: blue" onmouseenter="roundBorders(this)">
+                    <div style="margin: 10px; width: -webkit-fill-available; font-size: medium; color: aliceblue" > <b>Juego de encontrar la llave</b></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="images">
+                    <img id="mano1" src="closed1.png" name="left.png" onclick="checkRound(this)"/>
+                </td>
+
+                <td class="images">
+                    <img id="mano2" src="closed2.png" name="right.png" onclick="checkRound(this)"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="points" onmouseenter="roundBorders(this)" style="background-color: rgb(255, 191, 0)">
+                    <span>Puntos del jugador: </span>
+                    <span id="playerPoints">0</span>
+                </td>
+
+                <td class="points" onmouseenter="roundBorders(this)" style="background-color: rgb(255, 191, 0)">
+                    <span>Puntos de la maquina: </span>
+                    <span id="IAPoints">0</span>
+                </td>
+            </tr>
+        </table>
+
+        <div id="buttons">
+            <button id="reiniciar"> Reiniciar contadores </button>
+            <button id="pista"> Pista </button>
+        </div>
+
+        <p id="textoPista">  </p>
+            
+    </div>
+
+
+    <script>
+        var keyHand;
+        var playerPoints = 0, iaPoints = 0;
+        var srcKey = "key.png";
+        var openLeft = "left.png";
+        var openRight = "right.png";
+
+        $(document).ready( function()
+            {
+                keyHand = Math.floor((Math.random() * 2) + 1);
+            }
+        )
+
+        /*$(".images").on('click',function() {
+                $(this).each(function(i, el)
+                {
+                    $(this).prop("disabled",true);
+                })    
+            }
+        );*/
+
+        /*function disableImages(){
+            $("img.images").attr("disabled", true);
+        };*/
+
+        function checkRound(im)
+        {
+            //disableImages();
+
+            if($(im).attr("id") == "mano1")
+            {
+                if(keyHand == 1)
+                {
+                    playerPoints += 1;
+                    swapForKey(im);
+                }
+                else
+                {
+                    iaPoints += 1;
+                    swapForEmpty(im);
+                }
+            }
+            else if($(im).attr("id") == "mano2")
+            {
+                if(keyHand == 2)
+                {
+                    playerPoints += 1;
+                    swapForKey(im);
+                }
+                else
+                {
+                    iaPoints += 1;
+                    swapForEmpty(im);
+                }
+            }
+            changePoints();
+            keyHand = Math.floor((Math.random() * 2) + 1);
+        }
+
+        $(document).on("click", "#reiniciar", function () {
+                iaPoints = 0;
+                playerPoints = 0;
+                changePoints();
+            }
+        )
+
+        $(document).on("click", "#pista", function () {
+                $("#textoPista").text("La llave esta en la mano " + keyHand);
+            }
+        )
+
+        function changePoints()
+        {
+            $("#playerPoints").text(playerPoints);
+            $("#IAPoints").text(iaPoints);
+        }
+
+        function swapForKey(el) {
+            var aux = $(el).attr('src');
+            $(el).attr('src', srcKey);
+
+            setTimeout(function() { 
+                $(el).attr('src', aux);
+            }, 1000);
+        }
+
+        function swapForEmpty(el) {
+            //LO CAMBIAMOS
+            var aux = $(el).attr('src');
+            $(el).attr('src', $(el).attr('name'));
+            $(el).attr('name', aux);
+
+            //LO VOLVEMOS A PONER DONDE ESTABA
+            var aux2 = $(el).attr('src');
+            setTimeout(function() { 
+                $(el).attr('src', aux);
+            }, 1000);
+            $(el).attr('name', aux2);
+        }
+
+        function roundBorders(el)
+        {
+            $(el).hover(
+                function()
+                {
+                    $(this).css('border-radius', '25px');
+                },
+                function()
+                {
+                    $(this).css('border-radius', '0px');
+                }
+            )
+        }
+        
+        $("img").width(290);
+        $(".points").height(40);
+    </script>
+</body>
+
+</html>
